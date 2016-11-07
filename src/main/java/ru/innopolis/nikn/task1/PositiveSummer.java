@@ -18,7 +18,7 @@ public class PositiveSummer implements IPositiveSummer{
 
     /**
      * Return positive sum in share resource - ShareBoxMonitor
-     * @param URL[] resources
+     * @param resources URL[]
      * @return ShareBoxMonitor
      * @throws InterruptedException
      */
