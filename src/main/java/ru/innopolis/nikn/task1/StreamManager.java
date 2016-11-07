@@ -11,7 +11,7 @@ abstract public class StreamManager {
 
     /**
      * Return new stream Scanner from String path
-     * @param String path
+     * @param path String
      * @return Scanner
      * @throws IOException
      */

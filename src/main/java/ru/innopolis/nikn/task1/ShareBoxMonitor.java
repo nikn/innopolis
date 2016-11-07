@@ -7,7 +7,14 @@ import java.util.logging.Logger;
  * Created by Nikolay on 04.11.2016.
  */
 public class ShareBoxMonitor {
+    /**
+     * Sum result
+     */
     private int value = 0;
+
+    /**
+     * Throw predicate
+     */
     private boolean predicate = true;
     private static Logger logger;
 
@@ -25,7 +32,7 @@ public class ShareBoxMonitor {
 
     /**
      * Add positive value to sum
-     * @param value
+     * @param value int
      */
     public synchronized void addValue(int value) {
         if(value < 0) {

@@ -8,7 +8,7 @@ import java.net.URL;
 public interface IPositiveSummer {
     /**
      * Return positiveSummer
-     * @param URL[] resources
+     * @param resources URL[]
      * @return ShareBoxMonitor
      * @throws InterruptedException
      */
@@ -16,7 +16,7 @@ public interface IPositiveSummer {
 
     /**
      * Return positiveSummer
-     * @param URL[] resources
+     * @param  resources URL[]
      * @return ShareBoxMonitor
      * @throws InterruptedException
      */
