@@ -9,8 +9,7 @@ public interface IShareBoxMonitor {
      * Get current sum value
      * @return value int
      */
-    public int getValue();
-
+    public long getValue();
     /**
      * Add positive value to sum
      * @param value int

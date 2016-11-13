@@ -11,7 +11,7 @@ public class ShareBoxMonitor implements IShareBoxMonitor{
     /**
      * Sum result
      */
-    private int value = 0;
+    private long value = 0;
 
     /**
      * Throw predicate
@@ -20,7 +20,7 @@ public class ShareBoxMonitor implements IShareBoxMonitor{
     private static Logger logger = LoggerFactory.getLogger(ShareBoxMonitor.class);
 
     @Override
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 

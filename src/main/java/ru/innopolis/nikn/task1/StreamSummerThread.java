@@ -34,8 +34,9 @@ public class StreamSummerThread extends Thread{
         }
         if(monitor.isPredicate() && stream.hasNext()) {
             monitor.errorAction(new RuntimeException("Incorrect data format: {}" + stream.next()));
-            stream.close();
         }
+        stream.close();
+
         logger.info("RUN END.");
         MDC.clear();
     }
