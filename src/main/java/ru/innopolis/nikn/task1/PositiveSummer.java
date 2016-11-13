@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.innopolis.nikn.utils.StreamUtil;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,17 +43,12 @@ public class PositiveSummer implements IPositiveSummer {
     public ShareBoxMonitor getPositiveSum(String[] resources) {
         this.setMonitor(new ShareBoxMonitor());
         this.setThreads(new LinkedList<Thread>());
-        StreamUtil streamUtil = getStreamUtil();
-        for(String resource: resources) {
-            try {
-                Thread thread = new StreamSummerThread(getMonitor(), streamUtil.getScanner(resource));
-                thread.start();
-                getThreads().add(thread);
-            }
-            catch (Exception ex) {
-                getMonitor().errorAction(ex);
-            }
-        }
+        createThreads(resources);
+        joinThreads();
+        return getMonitor();
+    }
+
+    private void joinThreads() {
         for(Thread thread: getThreads()) {
             try {
                 thread.join();
@@ -60,7 +56,24 @@ public class PositiveSummer implements IPositiveSummer {
                 getMonitor().errorAction(ex);
             }
         }
-        return getMonitor();
+    }
+
+    private void createThreads(String[] resources) {
+        StreamUtil streamUtil = getStreamUtil();
+        for(String resource: resources) {
+            try {
+                Thread thread = getStreamSummerThread(streamUtil, resource);
+                thread.start();
+                getThreads().add(thread);
+            }
+            catch (Exception ex) {
+                getMonitor().errorAction(ex);
+            }
+        }
+    }
+
+    private Thread getStreamSummerThread(StreamUtil streamUtil, String resource) throws IOException {
+       return  new StreamSummerThread(getMonitor(), streamUtil.getScanner(resource));
     }
 
 }
