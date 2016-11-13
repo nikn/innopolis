@@ -1,6 +1,9 @@
 package ru.innopolis.nikn.task1;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Date;
 
 /**
@@ -8,14 +11,17 @@ import java.util.Date;
  */
 public class Main {
 
+    private static Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
         PositiveSummer positiveSummer = new PositiveSummer();
         long time = new Date().getTime();
         String[] resources = {
                 "/test0/1.txt",
                 "/test0/2.txt",
-                "http://10.243.1.219/1.txt",
-                "http://10.243.1.219/1.txt"
+                "http://10.240.16.12/1.txt",
+                "http://10.240.16.12/1.txt",
+                "http://10.240.16.12/1.txt",
         };
 
        /* String[] resources = {
@@ -37,8 +43,8 @@ public class Main {
                 "/test1/15.ints",
         };*/
         ShareBoxMonitor shareBoxMonitor = positiveSummer.getPositiveSum(resources);
-        System.out.println(((new Date()).getTime() - time));
-        System.out.println(shareBoxMonitor.getValue());
+        logger.info("Time: {}", ((new Date()).getTime() - time));
+        logger.info("Result: {}", (shareBoxMonitor.getValue()));
     }
 
 }

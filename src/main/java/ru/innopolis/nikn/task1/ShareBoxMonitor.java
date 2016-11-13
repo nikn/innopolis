@@ -26,7 +26,7 @@ public class ShareBoxMonitor implements IShareBoxMonitor{
 
     @Override
     public synchronized void addValue(int value) {
-        if(value < 0) {
+        if(value < 0 || value % 2 != 0) {
             return;
         }
         this.value += value;
