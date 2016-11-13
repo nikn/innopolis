@@ -66,7 +66,7 @@ public class StreamUtil {
      * Create Input stream from file path
      * @param filePath String
      * @return InputStream
-     * @throws IOException
+     * @throws IOException Exception
      */
     private InputStream createInputStream(String filePath) throws IOException {
         try {
@@ -86,7 +86,7 @@ public class StreamUtil {
      * Return Input stream from file path
      * @param filePath String
      * @return InputStream
-     * @throws IOException
+     * @throws IOException Exception
      */
     public InputStream getInputStream(String filePath) throws IOException {
         boolean validate = validateFilePath(filePath);
@@ -110,6 +110,7 @@ public class StreamUtil {
      * Return Scanner from String file path
      * @param filePath String
      * @return Scanner
+     * @throws IOException Exception
      */
     public Scanner getScanner(String filePath) throws IOException {
         return new Scanner(getInputStream(filePath));

@@ -18,7 +18,8 @@ public interface IShareBoxMonitor {
     public void addValue(int value);
 
     /**
-     * Log error message, stop run treads
+     * Log error message, stop run treads.
+     * @param ex Exception
      */
     public void errorAction(Exception ex);
 
