@@ -1,5 +1,9 @@
 package ru.innopolis.nikn.task1;
 
+import org.apache.log4j.MDC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Scanner;
 
 /**
@@ -9,11 +13,12 @@ public class StreamSummerThread extends Thread{
 
     private ShareBoxMonitor monitor;
     private Scanner stream;
+    private static Logger logger = LoggerFactory.getLogger(StreamSummerThread.class);
 
     /**
      * Constructor StreamSummerThread
-     * @param ShareBoxMonitor monitor
-     * @param Scanner stream
+     * @param monitor ShareBoxMonitor
+     * @param stream Scanner
      */
     StreamSummerThread(ShareBoxMonitor monitor, Scanner stream) {
         this.monitor = monitor;
@@ -22,14 +27,16 @@ public class StreamSummerThread extends Thread{
 
     @Override
     public void run() {
+        MDC.put("threadName", this.getName());
+        logger.info("RUN START.");
         while(monitor.isPredicate() && stream.hasNextInt()){
             monitor.addValue(stream.nextInt());
         }
         if(monitor.isPredicate() && stream.hasNext()) {
+            monitor.errorAction(new RuntimeException("Incorrect data format: {}" + stream.next()));
             stream.close();
-            monitor.errorAction("Incorrectly data format.");
-            throw new RuntimeException("Incorrectly data format.");
         }
-        return;
+        logger.info("RUN END.");
+        MDC.clear();
     }
 }

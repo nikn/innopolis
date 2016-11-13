@@ -1,12 +1,13 @@
 package ru.innopolis.nikn.task1;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Created by Nikolay on 04.11.2016.
  */
-public class ShareBoxMonitor {
+public class ShareBoxMonitor implements IShareBoxMonitor{
     /**
      * Sum result
      */
@@ -16,45 +17,29 @@ public class ShareBoxMonitor {
      * Throw predicate
      */
     private boolean predicate = true;
-    private static Logger logger;
+    private static Logger logger = LoggerFactory.getLogger(ShareBoxMonitor.class);
 
-    static {
-        logger = Logger.getLogger(ShareBoxMonitor.class.getName());
-    }
-
-    /**
-     * Get current sum value
-     * @return value
-     */
+    @Override
     public int getValue() {
         return value;
     }
 
-    /**
-     * Add positive value to sum
-     * @param value int
-     */
+    @Override
     public synchronized void addValue(int value) {
         if(value < 0) {
             return;
         }
         this.value += value;
-        logger.info("Current value: " + this.value);
+        logger.info("Current value: {}", this.value);
     }
 
-    /**
-     * Log error message, stop run treads
-     * @param message
-     */
-    public synchronized void errorAction(String message) {
-        logger.log(Level.SEVERE, "Exception: ", message);
+    @Override
+    public synchronized void errorAction(Exception ex) {
+        logger.error("Exception: {}", ex);
         this.predicate = false;
     }
 
-    /**
-     * Get current predicate
-     * @return predicate
-     */
+    @Override
     public boolean isPredicate() {
         return predicate;
     }

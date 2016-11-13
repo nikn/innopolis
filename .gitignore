@@ -1,0 +1,9 @@
+build/
+.idea/
+.gradle/
+classes/
+ndc.log.2016-11-11.log
+innopolis.ipr
+innopolis.iws
+myAppender.log
+ndc.log

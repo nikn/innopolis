@@ -1,43 +1,102 @@
 package ru.innopolis.nikn.task1;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ru.innopolis.nikn.utils.StreamUtil;
 
-import java.net.URL;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Nikolay on 05.11.2016.
  */
-public class PositiveSummerTest extends TestCase{
+public class PositiveSummerTest{
     IPositiveSummer positiveSummer;
+    private static Logger log = LoggerFactory.getLogger(PositiveSummerTest.class);
 
-    public static junit.framework.Test suite()
-    {
-        return new TestSuite( PositiveSummerTest.class );
+    @BeforeClass
+    public static void beforeTest(){
+        log.info("This is @BeforeClass method");
     }
 
-    public void setUp() throws Exception {
-        positiveSummer = new PositiveSummer();
-        super.setUp();
-    }
-    public void test0() throws Exception {
-        URL[] resources = {
-                getClass().getResource("/test0/1.txt"),
-                getClass().getResource("/test0/2.txt"),
+    @Before
+    public void before() throws IOException {
+        log.info("This is @Before method");
+        String[] resources = {
+                "/test3/1.txt",
+                "/test3/2.txt",
+                "http://10.240.17.29/1.txt",
+                "http://10.240.17.29/2.txt"
         };
-        ShareBoxMonitor result = positiveSummer.executeTest0(resources);
-        System.out.println(result.getValue());
-        assertEquals("Runtime error", result.isPredicate(), result.getValue() >= 0);
+        StreamUtil streamUtil =  spy(new StreamUtil());
+        String dataOne = "1 3 5 7";
+        String dataTwo = "2 4 6 8";
+        InputStream streamOne = new ByteArrayInputStream(dataOne.getBytes());
+        InputStream streamTwo = new ByteArrayInputStream(dataTwo.getBytes());
+        doReturn(streamOne).when(streamUtil).getInputStream(resources[0]);
+        doReturn(streamTwo).when(streamUtil).getInputStream(resources[1]);
+        doReturn(streamOne).when(streamUtil).getInputStream(resources[2]);
+        doReturn(streamTwo).when(streamUtil).getInputStream(resources[3]);
+        PositiveSummer positiveSummer =  spy(new PositiveSummer());
+        when(positiveSummer.getStreamUtil()).thenReturn(streamUtil);
+        this.positiveSummer = positiveSummer;
     }
 
-    public void test1() throws Exception {
-        URL[] resources = {
-                getClass().getResource("/test1/1.txt"),
-                getClass().getResource("/test1/2.txt"),
+
+
+    @Test
+    public void testGetPositiveSumLocal() throws Exception {
+        log.info("This is testGetPositiveSumLocal method");
+        String[] resources = {
+                "/test3/1.txt",
+                "/test3/2.txt",
         };
-        ShareBoxMonitor result = positiveSummer.executeTest0(resources);
-        System.out.println(result.getValue());
-        assertEquals("Runtime error", result.isPredicate(), result.getValue() >= 0);
+        ShareBoxMonitor result = positiveSummer.getPositiveSum(resources);
+        log.info("Result sum: {}.",result.getValue());
+        assertTrue("Resources is incorrect.", result.isPredicate());
     }
+
+    @Test
+    public void testGetPositiveSumURL() throws Exception {
+        log.info("This is testGetPositiveSumURL method");
+        String[] resources = {
+                "http://10.240.17.29/1.txt",
+                "http://10.240.17.29/1.txt",
+        };
+        ShareBoxMonitor result = positiveSummer.getPositiveSum(resources);
+        log.info("Result sum: {}.",result.getValue());
+        assertTrue("Resources is incorrect.", result.isPredicate());
+    }
+
+    @Test
+    public void testGetPositiveSumFail() throws Exception {
+        log.info("This is testGetPositiveSumFail method");
+        String[] resources = {
+                "txt",
+                "http:/",
+        };
+        ShareBoxMonitor result = positiveSummer.getPositiveSum(resources);
+        log.info("Result sum: {}.",result.getValue());
+        assertTrue("Resources is incorrect.", !result.isPredicate());
+    }
+
+    @After
+    public void after(){
+        log.info("This is @After method");
+    }
+
+    @AfterClass
+    public static void afterTest(){
+        log.info("This is @AfterClass method");
+    }
+
+
+    //@Test(expected = Exception.class) - not correct
+    //@Ignore - крайне редко!
 
 }
